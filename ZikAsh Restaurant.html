@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZikAsh Restaurant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fffaf4;
+        }
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #d32f2f;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        section {
+            padding: 40px;
+        }
+        .menu-section, .gallery, .reviews, .contact, .about, .delivery {
+            max-width: 1200px;
+            margin: auto;
+        }
+        .menu-buttons button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #ff9800;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .menu-items img, .gallery img {
+            width: 100%;
+            max-width: 220px;
+            height: auto;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .popup-content input, .popup-content button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        footer {
+            text-align: center;
+            background-color: #8b0000;
+            color: white;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to ZikAsh Restaurant</h1>
+        <p>Delicious Food, Beautiful Ambience, Unmatched Taste</p>
+    </header>
+    <nav>
+        <a href="#about">About</a>
+        <a href="#menu">Menu</a>
+        <a href="#delivery">Delivery</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Contact</a>
+        <a href="#" onclick="showPopup()">Reserve Now</a>
+    </nav>
+
+    <section id="about" class="about">
+        <h2>About Us</h2>
+        <p>ZikAsh is a place where flavor meets culture. We offer a wide range of delicious dishes from Indian to international cuisines, all served in a warm and elegant setting.</p>
+        <img src="ZikAsh_Photo_Restaurant.jpeg" alt="Restaurant Interior" style="width:100%; max-width:800px; border-radius:12px;">
+    </section>
+
+    <section id="menu" class="menu-section">
+        <h2>Our Menu</h2>
+        <div class="menu-buttons">
+            <button onclick="filterMenu('biryani')">Biryani</button>
+            <button onclick="filterMenu('sweets')">Sweets</button>
+            <button onclick="filterMenu('snacks')">Starters</button>
+            <button onclick="filterMenu('main')">Main Course</button>
+            <button onclick="filterMenu('junk')">Junk Food</button>
+            <button onclick="filterMenu('all')">Show All</button>
+        </div>
+        <div class="menu-items" id="menuItems">
+            <img src="ZikASh_photo_menu.jpeg" class="biryani">
+            <img src="ZikAsh_photo_Dishes.jpeg" class="main">
+            <img src="ZikAsh_Photo_sweet.jpeg" class="sweets">
+            <img src="ZikAsh_Photo_Dishes (2).jpeg" class="snacks">
+            <img src="ZikAsh_Photo_Junk Food.jpeg" class="junk">
+            <img src="ZikAsh_Photo_Delicious food.jpeg" class="main">
+        </div>
+    </section>
+
+    <section id="delivery" class="delivery">
+        <h2>Delivery Services</h2>
+        <p>Enjoy your favorite meals at the comfort of your home. We offer fast and hygienic food delivery services across the city.</p>
+        <ul>
+            <li>Fast delivery within 30–45 minutes</li>
+            <li>Contactless and hygienic packaging</li>
+            <li>Live order tracking available</li>
+            <li>Order via phone or our website</li>
+        </ul>
+        <p><strong>To order:</strong> Call us at +91-9876543210 or email orders@zikashrestaurant.com</p>
+    </section>
+
+    <section id="reviews" class="reviews">
+        <h2>Customer Reviews</h2>
+        <p>⭐️⭐️⭐️⭐️⭐️ - “Amazing food and fast delivery! Highly recommend ZikAsh!” - Rani</p>
+        <p>⭐️⭐️⭐️⭐️⭐️ - “The best biryani I’ve had. Great ambience and staff.” - Ayaan</p>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <p>Email: contact@zikashrestaurant.com</p>
+        <p>Phone: +91-9876543210</p>
+        <p>Address: ZikAsh Lane, Foodie Street, India</p>
+    </section>
+
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <h3>Table Reservation</h3>
+            <form onsubmit="submitReservation(event)">
+                <input type="text" placeholder="Name" required><br>
+                <input type="number" placeholder="Phone" required><br>
+                <input type="date" required><br>
+                <input type="time" required><br>
+                <button type="submit">Book</button>
+                <button type="button" onclick="hidePopup()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 ZikAsh Restaurant. All Rights Reserved.
+    </footer>
+
+    <script>
+        function filterMenu(type) {
+            const items = document.querySelectorAll('.menu-items img');
+            items.forEach(item => {
+                if (type === 'all') {
+                    item.style.display = 'inline-block';
+                } else {
+                    item.style.display = item.classList.contains(type) ? 'inline-block' : 'none';
+                }
+            });
+        }
+
+        function showPopup() {
+            document.getElementById('popup').style.display = 'flex';
+        }
+
+        function hidePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function submitReservation(event) {
+            event.preventDefault();
+            alert("Your reservation has been submitted!");
+            hidePopup();
+        }
+    </script>
+</body>
+</html>
